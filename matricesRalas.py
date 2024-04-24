@@ -98,18 +98,24 @@ class ListaEnlazada:
 
 class MatrizRala:
     def __init__( self, M, N ):
-        self.filas = {}
+        self.filas = {} # Dict de key [fila] = valor {(columna, 1 o 0)}
         self.shape = (M, N)
 
     def __getitem__( self, Idx ):
-        # COMPLETAR:
-        # Esta funcion implementa la indexacion ( Idx es una tupla (m,n) ) -> A[m,n]
-        pass
+        res = 0
+        if self.filas.get(Idx[0]):
+            current = self.filas.get(Idx[0])
+            while current.siguiente is not None:
+                if current.valor[0] == Idx[1]:
+                    res = current.valor[1]
+                current = current.siguiente
+        return res
     
     def __setitem__( self, Idx, v ):
         # COMPLETAR:
         # Esta funcion implementa la asignacion durante indexacion ( Idx es una tupla (m,n) ) -> A[m,n] = v
-        pass
+        if self.filas[Idx[0]]: # si el paper m fue referenciado por algun otro
+            self.filas[Idx[0]] = (Idx[1], v)
 
     def __mul__( self, k ):
         # COMPLETAR:
@@ -153,8 +159,3 @@ def GaussJordan( A, b ):
     # Hallar solucion x para el sistema Ax = b
     # Devolver error si el sistema no tiene solucion o tiene infinitas soluciones, con el mensaje apropiado
     pass
-
-
-
-
-
