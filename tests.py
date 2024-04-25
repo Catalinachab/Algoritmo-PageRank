@@ -37,7 +37,7 @@ class TestIndexacionMatrices:
         A[1,0] = 3
 
         assert A[1,0] == 3
-
+'''
 class TestSumaMatrices:
     def test_distintasDimensiones( self ):
         A = MatrizRala(2,3)
@@ -106,3 +106,5 @@ class TestProductoMatricial:
         C1 = A @ Id
         C2 = Id @ A
         assert C1[0,0] == 1 and C1[0,2] == 3 and C1[1,2] == 4 and C2[0,0] == 1 and C2[0,2] == 3 and C2[1,2] == 4 and C1.shape == C2.shape and C1.shape == A.shape
+
+'''

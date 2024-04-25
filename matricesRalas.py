@@ -112,10 +112,24 @@ class MatrizRala:
         return res
     
     def __setitem__( self, Idx, v ):
-        # COMPLETAR:
+        
         # Esta funcion implementa la asignacion durante indexacion ( Idx es una tupla (m,n) ) -> A[m,n] = v
-        if self.filas[Idx[0]]: # si el paper m fue referenciado por algun otro
-            self.filas[Idx[0]] = (Idx[1], v)
+        if self.filas[Idx[0]]: # existe la fila m (el paper m fue referenciado por algun otro)
+            if self.filas[Idx[0]].nodoPorCondicion( lambda y: y.valor[0] == Idx[1] ): #existe el nodo n en la fila m
+                self.filas[Idx[0]].nodoPorCondicion( lambda y: y.valor[0] == Idx[1] ).valor[1] = v
+            else: #no existe el nodo 
+                prev = self.filas[Idx[0]].raiz
+                actual = self.filas[Idx[0]].raiz
+                while actual.siguiente is not None:
+                    if actual.valor[0] > Idx[1]:
+                        nuevoNodo = self.filas[Idx[0]].Nodo((Idx[1], v), actual)
+                        self.filas[Idx[0]].insertarDespuesDeNodo(v, prev)
+                        break
+                    prev = actual
+                    actual = actual.siguiente
+        else: # no existe la fila m
+            self.filas[Idx[0]] = ListaEnlazada()
+            self.filas[Idx[0]].insertarFrente((Idx[1], v))
 
     def __mul__( self, k ):
         # COMPLETAR:
