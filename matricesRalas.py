@@ -132,29 +132,49 @@ class MatrizRala:
             self.filas[Idx[0]].insertarFrente((Idx[1], v))
 
     def __mul__( self, k ):
-        # COMPLETAR:
         # Esta funcion implementa el producto matriz-escalar -> A * k
-        pass
+        for key in self.filas.keys():
+            current = self.filas[key].raiz
+            while current.siguiente is not None:
+                current.valor[1] = current.valor[1] * k
+                current = current.siguiente
     
     def __rmul__( self, k ):
         # Esta funcion implementa el producto escalar-matriz -> k * A
         return self * k
 
     def __add__( self, other ):
-        # COMPLETAR:
         # Esta funcion implementa la suma de matrices -> A + B
-        pass
+        if self.shape != other.shape:
+            raise Exception('Las matrices deben tener las mismas dimensiones')
+        
+        matAdd = MatrizRala(self.shape[0], self.shape[1])
+        for i in range (self.shape[0]):
+            for j in range (self.shape[1]):
+                matAdd[i,j] = self[i,j] + other[i,j]
+        return matAdd
     
     def __sub__( self, other ):
-        # COMPLETAR:
         # Esta funcion implementa la resta de matrices (pueden usar suma y producto) -> A - B
-        pass
-    
+        if self.shape != other.shape:
+            raise Exception('Las matrices deben tener las mismas dimensiones')
+        
+        matSub = MatrizRala(self.shape[0], self.shape[1])
+        for i in range (self.shape[0]):
+            for j in range (self.shape[1]):
+                matSub[i,j] = self[i,j] - other[i,j]
+        return matSub
+        
     def __matmul__( self, other ):
-        # COMPLETAR:
         # Esta funcion implementa el producto matricial (notado en Python con el operador "@" ) -> A @ B
-        pass                
-
+        if self.shape[1] != other.shape[0]:
+            raise Exception('Las dimensiones de las matrices no son compatibles para el producto matricial')
+        matMul = MatrizRala(self.shape[0], other.shape[1])
+        for i in range(self.shape[0]): # filas de A
+            for j in range(other.shape[1]): # columnas de B
+                for k in range(self.shape[1]): # columnas de A
+                    matMul[i,j] += self[i,k] * other[k,j]
+        return matMul
         
     def __repr__( self ):
         res = 'MatrizRala([ \n'
@@ -162,9 +182,7 @@ class MatrizRala:
             res += '    [ '
             for j in range( self.shape[1] ):
                 res += str(self[i,j]) + ' '
-            
             res += ']\n'
-
         res += '])'
 
         return res
@@ -172,4 +190,8 @@ class MatrizRala:
 def GaussJordan( A, b ):
     # Hallar solucion x para el sistema Ax = b
     # Devolver error si el sistema no tiene solucion o tiene infinitas soluciones, con el mensaje apropiado
+    
+    # poner pivotes (dividir la fila por el valor de la pos que quiero q sea el pivote)
+    # hacer 0s arriba y abajo (restar/sumar a la fila la fila que tiene el pivote * el valor de la pos que quiero q sea 0)
+
     pass
