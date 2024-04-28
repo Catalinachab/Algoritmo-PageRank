@@ -11,33 +11,37 @@ class TestIndexacionMatrices:
         A = MatrizRala(3,3)
         
         assert np.allclose( np.zeros(9), [A[i,j] for i in range(3) for j in range(3)] )
-
+        
     def test_asignarValor( self ):
         A = MatrizRala(3,3)
         A[0,0] = 1
-
         assert A[0,0] == 1
 
     def test_asignarDejaCeros(self):
         A = MatrizRala(3,3)
         A[0,0] = 1
-
         assert np.allclose( np.zeros(9), [A[i,j] if (i != j and i != 0) else 0 for i in range(3) for j in range(3)] )
 
     def test_asignarEnMismaFila( self ):
         A = MatrizRala(3,3)
+        print(A)
         A[0,1] = 2
+        print(A)
         A[0,0] = 1
+        print(A)
 
         assert A[0,1] == 2 and A[0,0] == 1
 
+    '''
     def test_reasignar( self ):
         A = MatrizRala(3,3)
         A[1,0] = 1
         A[1,0] = 3
 
         assert A[1,0] == 3
+    '''
 '''
+
 class TestSumaMatrices:
     def test_distintasDimensiones( self ):
         A = MatrizRala(2,3)

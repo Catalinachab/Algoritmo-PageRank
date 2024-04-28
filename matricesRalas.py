@@ -92,7 +92,7 @@ class ListaEnlazada:
 
     class Nodo:
         def __init__( self, valor, siguiente ):
-            self.valor = valor
+            self.valor = valor # valor {(columna, num)}
             self.siguiente = siguiente
 
 
@@ -102,34 +102,51 @@ class MatrizRala:
         self.shape = (M, N)
 
     def __getitem__( self, Idx ):
-        res = 0
-        if self.filas.get(Idx[0]):
-            current = self.filas.get(Idx[0])
-            while current.siguiente is not None:
+        if Idx[0] in self.filas:
+            current = self.filas[Idx[0]].raiz
+            while current is not None:
                 if current.valor[0] == Idx[1]:
-                    res = current.valor[1]
+                    return (current.valor[1])
                 current = current.siguiente
-        return res
+        else:
+            return 0
     
     def __setitem__( self, Idx, v ):
-        
         # Esta funcion implementa la asignacion durante indexacion ( Idx es una tupla (m,n) ) -> A[m,n] = v
-        if self.filas[Idx[0]]: # existe la fila m (el paper m fue referenciado por algun otro)
-            if self.filas[Idx[0]].nodoPorCondicion( lambda y: y.valor[0] == Idx[1] ): #existe el nodo n en la fila m
+        if Idx[0] in self.filas: # existe la fila m (el paper m fue referenciado por algun otro)
+            if self.filas[Idx[0]].nodoPorCondicion(lambda y: y.valor[0] == Idx[1]) is not ValueError or IndexError:
+                print('hola entre al if')
                 self.filas[Idx[0]].nodoPorCondicion( lambda y: y.valor[0] == Idx[1] ).valor[1] = v
-            else: #no existe el nodo 
+            else:
                 prev = self.filas[Idx[0]].raiz
                 actual = self.filas[Idx[0]].raiz
                 while actual.siguiente is not None:
                     if actual.valor[0] > Idx[1]:
-                        nuevoNodo = self.filas[Idx[0]].Nodo((Idx[1], v), actual)
                         self.filas[Idx[0]].insertarDespuesDeNodo(v, prev)
                         break
                     prev = actual
                     actual = actual.siguiente
+            '''
+            try:
+                self.filas[Idx[0]].nodoPorCondicion(lambda y: y.valor[0] == Idx[1]) # existe el nodo n en la fila m
+                self.filas[Idx[0]].nodoPorCondicion( lambda y: y.valor[0] == Idx[1] ).valor[1] = v
+                
+            except ValueError or IndexError: # no existe el nodo
+
+                prev = self.filas[Idx[0]].raiz
+                actual = self.filas[Idx[0]].raiz
+                while actual.siguiente is not None:
+                    if actual.valor[0] > Idx[1]:
+                        self.filas[Idx[0]].insertarDespuesDeNodo(v, prev)
+                        break
+                    prev = actual
+                    actual = actual.siguiente
+                    
+            '''
         else: # no existe la fila m
             self.filas[Idx[0]] = ListaEnlazada()
-            self.filas[Idx[0]].insertarFrente((Idx[1], v))
+            self.filas[Idx[0]].insertarFrente((Idx[1], v)) 
+
 
     def __mul__( self, k ):
         # Esta funcion implementa el producto matriz-escalar -> A * k
