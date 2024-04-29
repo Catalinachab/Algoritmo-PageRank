@@ -213,37 +213,41 @@ def GaussJordan( A, b ):
     if A.shape[0] != b.shape[0]:
         raise Exception('A y b deben tener la misma cantidad de filas')
 
-    C=A
-
+    C=MatrizRala(A.shape[0], A.shape[1]+1)
     for i in range(A.shape[0]):
-        if i in A.filas:
-            C.filas[i].push(b[0,i])
-
+        for j in range(A.shape[1]):
+            C[i,j]=A[i,j]
+    for i in range(A.shape[0]):
+        C[i, C.shape[1]] = b[i,0]
+        
     for j in range(min(A.shape[0], A.shape[1])):
         # pivote
         cur = C.filas[j].raiz
-        while cur != None:
+        while cur is not None:
             v = cur.valor[1] * (1/(C[j,j]))
             val = (j, v)
             cur.valor = val
             cur = cur.siguiente
+        
         # ceros
         for i in range(min(A.shape[0], A.shape[1])):
             if i != j:
                 current_p = C.filas[j].raiz
                 current = C.filas[i].raiz
-                while current != None:
-                    v = current.valor[1] - (current_p.valor[1] * C[i,j])
-                    val = (j, v)
-                    curent.valor = val
-                    current_p = current_p.siguiente
-                    current = current.siguiente
+                for k in range(min(A.shape[0], A.shape[1])):
+                    print(f"i = {i}, k={k}, j={j}, C[i,k]={C[i,k]}")
+                    print(C[j,j] * C[i,j])
+                    C[i,k] = C[i,k] - (C[j,j] * C[i,j])
+                    print(f"i = {i}, k={k},j={j}, C[i,k]={C[i,k]}")
+                    print("------------------------------------")
+                   
+        print(C)
     zeros = False
     absurd = False
     for i in range(A.shape[0]):
         current = A.filas[i].raiz
         t = 0
-        while current != None and (current.valor[1] == 0): 
+        while current is not None and (current.valor[1] == 0): 
             t+=1
         if t == A.shape[1]-1:
             absurd = True
@@ -255,5 +259,7 @@ def GaussJordan( A, b ):
     elif zeros:
         raise Exception('Infinitas soluciones')
     else:
-        solution = [C[i, shape[1]-1] for i in range(C.shape[0])]
-        return solution
+        x = MatrizRala(A.shape[1],b.shape[0])
+        for i in range(C.shape[0]):
+            x[i,0]= C[i, C.shape[1]-1]
+        return x
