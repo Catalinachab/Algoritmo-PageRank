@@ -157,13 +157,6 @@ class MatrizRala:
                 matMul[i,j] = self[i,j]*k
         return matMul   
     
-        """ for key in self.filas.keys():
-            current = self.filas[key].raiz
-            while current.siguiente is not None:
-                if current.valor[1] is not None:
-                    current.valor = (current.valor[0], current.valor[1] * k)
-                current = current.siguiente """
-    
                     
     def __rmul__( self, k ):
         # Esta funcion implementa el producto escalar-matriz -> k * A
@@ -216,8 +209,51 @@ class MatrizRala:
 def GaussJordan( A, b ):
     # Hallar solucion x para el sistema Ax = b
     # Devolver error si el sistema no tiene solucion o tiene infinitas soluciones, con el mensaje apropiado
-    
-    # poner pivotes (dividir la fila por el valor de la pos que quiero q sea el pivote)
-    # hacer 0s arriba y abajo (restar/sumar a la fila la fila que tiene el pivote * el valor de la pos que quiero q sea 0)
 
-    pass
+    if A.shape[0] != b.shape[0]:
+        raise Exception('A y b deben tener la misma cantidad de filas')
+
+    C=A
+
+    for i in range(A.shape[0]):
+        if i in A.filas:
+            C.filas[i].push(b[0,i])
+
+    for j in range(min(A.shape[0], A.shape[1])):
+        # pivote
+        cur = C.filas[j].raiz
+        while cur != None:
+            v = cur.valor[1] * (1/(C[j,j]))
+            val = (j, v)
+            cur.valor = val
+            cur = cur.siguiente
+        # ceros
+        for i in range(min(A.shape[0], A.shape[1])):
+            if i != j:
+                current_p = C.filas[j].raiz
+                current = C.filas[i].raiz
+                while current != None:
+                    v = current.valor[1] - (current_p.valor[1] * C[i,j])
+                    val = (j, v)
+                    curent.valor = val
+                    current_p = current_p.siguiente
+                    current = current.siguiente
+    zeros = False
+    absurd = False
+    for i in range(A.shape[0]):
+        current = A.filas[i].raiz
+        t = 0
+        while current != None and (current.valor[1] == 0): 
+            t+=1
+        if t == A.shape[1]-1:
+            absurd = True
+        elif t == A.shape[1]:
+            zeros = True
+
+    if absurd:
+        raise Exception('No tiene solucion')
+    elif zeros:
+        raise Exception('Infinitas soluciones')
+    else:
+        solution = [C[i, shape[1]-1] for i in range(C.shape[0])]
+        return solution
