@@ -103,59 +103,68 @@ class MatrizRala:
 
     def __getitem__( self, Idx ):
         if Idx[0] in self.filas:
-            current = self.filas[Idx[0]].raiz
-            while current is not None:
-                if current.valor[0] == Idx[1]:
-                    return (current.valor[1])
-                current = current.siguiente
+            try:
+                self.filas[Idx[0]].nodoPorCondicion(lambda y: y.valor[0] == Idx[1])
+                current = self.filas[Idx[0]].raiz
+                while current is not None:
+                    if current.valor[0] == Idx[1]:
+                        return (current.valor[1])
+                    current = current.siguiente
+            except (ValueError, IndexError): # no existe el nodo
+                return 0        
         else:
             return 0
     
     def __setitem__( self, Idx, v ):
         # Esta funcion implementa la asignacion durante indexacion ( Idx es una tupla (m,n) ) -> A[m,n] = v
-        if Idx[0] in self.filas: # existe la fila m (el paper m fue referenciado por algun otro)
-            if self.filas[Idx[0]].nodoPorCondicion(lambda y: y.valor[0] == Idx[1]) is not ValueError or IndexError:
-                print('hola entre al if')
-                self.filas[Idx[0]].nodoPorCondicion( lambda y: y.valor[0] == Idx[1] ).valor[1] = v
-            else:
-                prev = self.filas[Idx[0]].raiz
-                actual = self.filas[Idx[0]].raiz
-                while actual.siguiente is not None:
-                    if actual.valor[0] > Idx[1]:
-                        self.filas[Idx[0]].insertarDespuesDeNodo(v, prev)
-                        break
-                    prev = actual
-                    actual = actual.siguiente
-            '''
+        if Idx[0] in self.filas:
             try:
                 self.filas[Idx[0]].nodoPorCondicion(lambda y: y.valor[0] == Idx[1]) # existe el nodo n en la fila m
-                self.filas[Idx[0]].nodoPorCondicion( lambda y: y.valor[0] == Idx[1] ).valor[1] = v
-                
+                nodo = self.filas[Idx[0]].nodoPorCondicion( lambda y: y.valor[0] == Idx[1])
+                nodo.valor=(Idx[1], v)    
             except ValueError or IndexError: # no existe el nodo
-
-                prev = self.filas[Idx[0]].raiz
                 actual = self.filas[Idx[0]].raiz
-                while actual.siguiente is not None:
-                    if actual.valor[0] > Idx[1]:
-                        self.filas[Idx[0]].insertarDespuesDeNodo(v, prev)
-                        break
-                    prev = actual
-                    actual = actual.siguiente
-                    
-            '''
+                if actual.valor[0]> Idx[1]:
+                    self.filas[Idx[0]].insertarFrente((Idx[1], v)) 
+               
+                else:
+                    while actual.siguiente is not None:
+                        actual = actual.siguiente
+                    if actual.valor[0] < Idx[1]:
+                        self.filas[Idx[0]].insertarDespuesDeNodo((Idx[1], v), actual)
+
+                    else:
+                        prev = self.filas[Idx[0]].raiz
+                        actual = self.filas[Idx[0]].raiz
+                        while actual is not None:
+                            if actual.valor[0] > Idx[1]:
+                                self.filas[Idx[0]].insertarDespuesDeNodo((Idx[1], v), prev)
+                                break
+                            prev = actual
+                            actual = actual.siguiente
         else: # no existe la fila m
             self.filas[Idx[0]] = ListaEnlazada()
             self.filas[Idx[0]].insertarFrente((Idx[1], v)) 
-
+               
+        
+       
 
     def __mul__( self, k ):
         # Esta funcion implementa el producto matriz-escalar -> A * k
-        for key in self.filas.keys():
+        matMul = MatrizRala(self.shape[0], self.shape[1])
+        for i in range(self.shape[0]):
+            for j in range(self.shape[1]):
+                matMul[i,j] = self[i,j]*k
+        return matMul   
+    
+        """ for key in self.filas.keys():
             current = self.filas[key].raiz
             while current.siguiente is not None:
-                current.valor[1] = current.valor[1] * k
-                current = current.siguiente
+                if current.valor[1] is not None:
+                    current.valor = (current.valor[0], current.valor[1] * k)
+                current = current.siguiente """
     
+                    
     def __rmul__( self, k ):
         # Esta funcion implementa el producto escalar-matriz -> k * A
         return self * k
@@ -164,10 +173,10 @@ class MatrizRala:
         # Esta funcion implementa la suma de matrices -> A + B
         if self.shape != other.shape:
             raise Exception('Las matrices deben tener las mismas dimensiones')
-        
+      
         matAdd = MatrizRala(self.shape[0], self.shape[1])
-        for i in range (self.shape[0]):
-            for j in range (self.shape[1]):
+        for i in range(self.shape[0]):
+            for j in range(self.shape[1]):
                 matAdd[i,j] = self[i,j] + other[i,j]
         return matAdd
     

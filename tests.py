@@ -32,15 +32,15 @@ class TestIndexacionMatrices:
 
         assert A[0,1] == 2 and A[0,0] == 1
 
-    '''
+
     def test_reasignar( self ):
         A = MatrizRala(3,3)
         A[1,0] = 1
         A[1,0] = 3
 
         assert A[1,0] == 3
-    '''
-'''
+
+
 
 class TestSumaMatrices:
     def test_distintasDimensiones( self ):
@@ -56,12 +56,16 @@ class TestSumaMatrices:
         A[0,0]=1
         A[0,2]=3
         A[2,2]=4
-
+        
+    
         B[0,2]=3
         B[1,1]=2
-
+        
+        
         C = A+B
+        
         assert C[0,0] == 1 and C[0,2] == 6 and C[2,2] == 4 and C[1,1] == 2
+        
 
 class TestProductoPorEscalar:
     def test_escalaCorrectamente( self ):
@@ -69,8 +73,9 @@ class TestProductoPorEscalar:
         A[0,0]=1
         A[0,2]=3
         A[2,2]=4
-
+        print(A)
         C = A * 13
+        print(C)
         assert C[0,0] == (1*13) and C[0,2] == (3*13) and C[2,2] == (4*13)
 
 class TestProductoMatricial:
@@ -111,4 +116,3 @@ class TestProductoMatricial:
         C2 = Id @ A
         assert C1[0,0] == 1 and C1[0,2] == 3 and C1[1,2] == 4 and C2[0,0] == 1 and C2[0,2] == 3 and C2[1,2] == 4 and C1.shape == C2.shape and C1.shape == A.shape
 
-'''
