@@ -151,7 +151,9 @@ class TestGaussJordan:
         x = GaussJordan(A,b)
 
         assert x[0,0] == 1 and x[1,0] == 2 and x[2,0] == 3
+    
         '''
+    '''
     def test_triangularSup( self ):
         A = MatrizRala(3,3)
         b = MatrizRala(3,1)
@@ -192,5 +194,5 @@ class TestGaussJordan:
 
         assert np.isclose( x[0,0], 0.5 ) and np.isclose(x[1,0], -0.1195) and np.isclose(x[2,0], 0.041667)
 
-    '''
+    
 

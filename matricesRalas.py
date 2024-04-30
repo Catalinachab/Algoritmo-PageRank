@@ -218,30 +218,26 @@ def GaussJordan( A, b ):
         for j in range(A.shape[1]):
             C[i,j]=A[i,j]
     for i in range(A.shape[0]):
-        C[i, C.shape[1]] = b[i,0]
-        
-    for j in range(min(A.shape[0], A.shape[1])):
-        # pivote
-        cur = C.filas[j].raiz
-        while cur is not None:
-            v = cur.valor[1] * (1/(C[j,j]))
-            val = (j, v)
-            cur.valor = val
-            cur = cur.siguiente
+        C[i, C.shape[1]-1] = b[i,0]
+    print(F"matriz virgen={C}")  
+    for i in range(C.shape[0]):
+        # buscas pivote
+        pivote=1
+        for k in range(C.shape[1]-1):
+                if C[i,k] !=0:
+                    pivote = C[i,k]
+                    columna_pivote=k
+                    break
+         # dividis por pivote    
+        for j in range(C.shape[1]) :
+            C[i,j]= C[i,j]*(1/pivote)
         
         # ceros
-        for i in range(min(A.shape[0], A.shape[1])):
-            if i != j:
-                current_p = C.filas[j].raiz
-                current = C.filas[i].raiz
-                for k in range(min(A.shape[0], A.shape[1])):
-                    print(f"i = {i}, k={k}, j={j}, C[i,k]={C[i,k]}")
-                    print(C[j,j] * C[i,j])
-                    C[i,k] = C[i,k] - (C[j,j] * C[i,j])
-                    print(f"i = {i}, k={k},j={j}, C[i,k]={C[i,k]}")
-                    print("------------------------------------")
-                   
-        print(C)
+        for j in range(i+1, C.shape[0]):
+            escalar = C[j,columna_pivote]
+            for k in range(C.shape[1]):
+                C[j,k]= C[j,k] - (escalar*C[i,k])      
+            print(C)
     zeros = False
     absurd = False
     for i in range(A.shape[0]):
@@ -263,3 +259,5 @@ def GaussJordan( A, b ):
         for i in range(C.shape[0]):
             x[i,0]= C[i, C.shape[1]-1]
         return x
+
+
