@@ -121,12 +121,24 @@ class MatrizRala:
             try:
                 self.filas[Idx[0]].nodoPorCondicion(lambda y: y.valor[0] == Idx[1]) # existe el nodo n en la fila m
                 nodo = self.filas[Idx[0]].nodoPorCondicion( lambda y: y.valor[0] == Idx[1])
-                nodo.valor=(Idx[1], v)    
+                if v == 0:
+                    if self.filas[Idx[0]].raiz is nodo:
+                        self.filas[Idx[0]].raiz = nodo.siguiente
+                    else:
+                        prev = self.filas[Idx[0]].raiz
+                        while prev.siguiente is not nodo:
+                            prev = prev.siguiente
+                        prev.siguiente = nodo.siguiente
+                else:
+                    nodo.valor=(Idx[1], v)    
             except ValueError or IndexError: # no existe el nodo
+                
+                if v==0:
+                    return
+
                 actual = self.filas[Idx[0]].raiz
-                if actual.valor[0]> Idx[1]:
+                if actual.valor[0] > Idx[1]:
                     self.filas[Idx[0]].insertarFrente((Idx[1], v)) 
-               
                 else:
                     while actual.siguiente is not None:
                         actual = actual.siguiente
@@ -143,6 +155,8 @@ class MatrizRala:
                             prev = actual
                             actual = actual.siguiente
         else: # no existe la fila m
+            if v==0:
+                return
             self.filas[Idx[0]] = ListaEnlazada()
             self.filas[Idx[0]].insertarFrente((Idx[1], v)) 
                
@@ -213,7 +227,7 @@ def GaussJordan( A, b ):
     if A.shape[0] != b.shape[0]:
         raise Exception('A y b deben tener la misma cantidad de filas')
 
-    C=MatrizRala(A.shape[0], A.shape[1]+1)
+    C = MatrizRala(A.shape[0], A.shape[1]+1)
     
     for i in range(A.shape[0]):
         for j in range(A.shape[1]):
@@ -250,7 +264,22 @@ def GaussJordan( A, b ):
             escalar = C[j,i]
             for k in range(C.shape[1]):
                 C[j,k]= C[j,k] - (escalar*C[i,k])      
-    print(C)
+    
+        print(C)
+        ''' FUNCIONA DENTRO DEL MISMO FOR I PERO PRUEBO AFUERA
+        for j in range(i-1, -1, -1):  # start from i-1 and go down to 0
+            escalar = C[j,i]
+            for k in range(C.shape[1]):
+                C[j,k] = C[j,k] - (escalar * C[i,k])
+        '''
+    for i in range(C.shape[0],0,-1):
+        for j in range(i-1, -1, -1):  # habia que poner hasta -1 se ve, no hasta 0, porque no estaba incluido
+            escalar = C[j,i]
+            for k in range(C.shape[1]):
+                C[j,k] = C[j,k] - (escalar * C[i,k])
+
+    #? OBSERVACION: funciona tanto recorriendo las filas de arriba hacia abajo como de abajo hacia arriba -> es que ni siquiera agarramos el ultimo pivot ni nada
+    '''
     for i in range(C.shape[0],0,-1):
         pivote = C[i,i]
         print(f"pivote {pivote}")
@@ -259,6 +288,7 @@ def GaussJordan( A, b ):
             print(f"j={j}escalar {escalar}")
             for k in range(C.shape[1]):
                 C[j,k]= C[j,k] - (escalar*pivote)        
+    '''
     print(C)
     zeros = False
     absurd = False

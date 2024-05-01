@@ -135,7 +135,6 @@ class TestGaussJordan:
         with pytest.raises(Exception) as e_info:
             GaussJordan(A,b)
 
-    '''
     def test_identidad( self ):
         A = MatrizRala(3,3)
         b = MatrizRala(3,1)
@@ -152,9 +151,7 @@ class TestGaussJordan:
 
         assert x[0,0] == 1 and x[1,0] == 2 and x[2,0] == 3
     
-        '''
-    '''
-    def test_triangularSup( self ):
+    def test_triangularSup( self ): # ! falla
         A = MatrizRala(3,3)
         b = MatrizRala(3,1)
         
@@ -172,8 +169,7 @@ class TestGaussJordan:
         x = GaussJordan(A,b)
 
         assert np.isclose( x[0,0], -1 ) and np.isclose(x[1,0], -1) and np.isclose(x[2,0], 3)
-
-    '''
+        
     def test_completa( self ):
         A = MatrizRala(3,3)
         b = MatrizRala(3,1)
