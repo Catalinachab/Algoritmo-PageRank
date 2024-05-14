@@ -40,8 +40,6 @@ class TestIndexacionMatrices:
 
         assert A[1,0] == 3
 
-
-
 class TestSumaMatrices:
     def test_distintasDimensiones( self ):
         A = MatrizRala(2,3)
@@ -66,7 +64,6 @@ class TestSumaMatrices:
         
         assert C[0,0] == 1 and C[0,2] == 6 and C[2,2] == 4 and C[1,1] == 2
         
-
 class TestProductoPorEscalar:
     def test_escalaCorrectamente( self ):
         A = MatrizRala(3,3)
@@ -151,7 +148,7 @@ class TestGaussJordan:
 
         assert x[0,0] == 1 and x[1,0] == 2 and x[2,0] == 3
     
-    def test_triangularSup( self ): # ! falla
+    def test_triangularSup( self ):
         A = MatrizRala(3,3)
         b = MatrizRala(3,1)
         
@@ -190,8 +187,9 @@ class TestGaussJordan:
 
         assert np.isclose( x[0,0], 0.5 ) and np.isclose(x[1,0], -0.1195) and np.isclose(x[2,0], 0.041667)
 
-    
-    def test_cuadrada_sinsol( self ):
+    #? TESTS MATRICES TQ SISTEMA NO TIENE SOL O TIENE INFINITAS SOLUCIONES
+
+    def test_Cuadrada_SinSol( self ):
         A = MatrizRala(3,3)
         b = MatrizRala(3,1)
         A[0,0] = 1
@@ -203,18 +201,29 @@ class TestGaussJordan:
         A[2,0] = 2
         A[2,1] = 4
         A[2,2] = 6
-
-        
-
         b[0,0] = 10
         b[1,0] = 20
         b[2,0] = 30
         
+        with pytest.raises(Exception) as e_info:
+            GaussJordan(A,b)
+    
+    def test_Cuadrada_InfinitasSol( self ):
+        A = MatrizRala(2,2)
+        b = MatrizRala(2,1)
+        A[0,0] = 1
+        A[1,0] = 2
+        
+        A[0,1] = 2
+        A[1,1] = 4
+        
+        b[0,0] = 4
+        b[1,0] = 8
 
         with pytest.raises(Exception) as e_info:
             GaussJordan(A,b)
-      
-    def test_no_cuadrada_sin_sol( self ):
+
+    def test_NoCuadrada_SinSol( self ):
         A = MatrizRala(4,3)
         b = MatrizRala(4,1)
         
@@ -229,7 +238,6 @@ class TestGaussJordan:
         A[2,2] = 2.34
         A[3,2] = 7
         
-
         b[0,0] = 1
         b[1,0] = 1
         b[2,0] = 1
@@ -238,7 +246,7 @@ class TestGaussJordan:
         with pytest.raises(Exception) as e_info:
             GaussJordan(A,b)
       
-    def test_no_cuadrada_inf_sol( self ):
+    def test_NoCuadrada_InfinitasSol( self ):
         A = MatrizRala(3,2)
         b = MatrizRala(3,1)
         
@@ -258,27 +266,6 @@ class TestGaussJordan:
 
         with pytest.raises(Exception) as e_info:
             GaussJordan(A,b)
-
-    def test_cuadrada_infinitas( self ):
-        A = MatrizRala(2,2)
-        b = MatrizRala(2,1)
-        A[0,0] = 1
-        A[1,0] = 2
-        
-        A[0,1] = 2
-        A[1,1] = 4
-        
-
-        b[0,0] = 4
-        b[1,0] = 8
-        
-        
-
-        with pytest.raises(Exception) as e_info:
-            GaussJordan(A,b)
-      
-      
-    
 
     
 
