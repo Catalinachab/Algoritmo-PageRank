@@ -297,4 +297,3 @@ def GaussJordan( A, b ):
         for i in range(C.shape[0]):
             x[i,0]= C[i, C.shape[1]-1]
         return x
-
