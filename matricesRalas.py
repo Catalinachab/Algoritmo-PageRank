@@ -223,9 +223,11 @@ class MatrizRala:
 def GaussJordan( A, b ):
     # Hallar solucion x para el sistema Ax = b
     # Devolver error si el sistema no tiene solucion o tiene infinitas soluciones, con el mensaje apropiado
-
+    
     if A.shape[0] != b.shape[0]:
         raise Exception('A y b deben tener la misma cantidad de filas')
+
+  
 
     C = MatrizRala(A.shape[0], A.shape[1]+1)
     
@@ -235,12 +237,12 @@ def GaussJordan( A, b ):
     for i in range(A.shape[0]):
         C[i, C.shape[1]-1] = b[i,0]
       
-    
+    minimo = min(A.shape[0],A.shape[1])
     for i in range(C.shape[0]):
         
         # buscas pivote
-     
-        if C[i,i] !=0:
+        
+        if C[i,i] !=0 and i!= C.shape[1]-1:
             pivote = C[i,i]
             
         else:
@@ -265,31 +267,15 @@ def GaussJordan( A, b ):
             for k in range(C.shape[1]):
                 C[j,k]= C[j,k] - (escalar*C[i,k])      
     
-        print(C)
-        ''' FUNCIONA DENTRO DEL MISMO FOR I PERO PRUEBO AFUERA
-        for j in range(i-1, -1, -1):  # start from i-1 and go down to 0
-            escalar = C[j,i]
-            for k in range(C.shape[1]):
-                C[j,k] = C[j,k] - (escalar * C[i,k])
-        '''
+    
     for i in range(C.shape[0],0,-1):
         for j in range(i-1, -1, -1):  # habia que poner hasta -1 se ve, no hasta 0, porque no estaba incluido
             escalar = C[j,i]
             for k in range(C.shape[1]):
                 C[j,k] = C[j,k] - (escalar * C[i,k])
 
-    #? OBSERVACION: funciona tanto recorriendo las filas de arriba hacia abajo como de abajo hacia arriba -> es que ni siquiera agarramos el ultimo pivot ni nada
-    '''
-    for i in range(C.shape[0],0,-1):
-        pivote = C[i,i]
-        print(f"pivote {pivote}")
-        for j in range(C.shape[0]-i,0,-1):
-            escalar = C[j,i]
-            print(f"j={j}escalar {escalar}")
-            for k in range(C.shape[1]):
-                C[j,k]= C[j,k] - (escalar*pivote)        
-    '''
-    print(C)
+    
+    
     zeros = False
     absurd = False
     for i in range(A.shape[0]):
@@ -312,49 +298,3 @@ def GaussJordan( A, b ):
             x[i,0]= C[i, C.shape[1]-1]
         return x
 
-'''
-def GaussJordan( A, b ):
-    # Hallar solucion x para el sistema Ax = b
-    # Devolver error si el sistema no tiene solucion o tiene infinitas soluciones, con el mensaje apropiado
-
-    if A.shape[0] != b.shape[0]:
-        raise Exception('A y b deben tener la misma cantidad de filas')
-
-    C=MatrizRala(A.shape[0], A.shape[1]+1)
-    for i in range(A.shape[0]):
-        for j in range(A.shape[1]):
-            C[i,j]=A[i,j]
-    for i in range(A.shape[0]):
-        C[i, C.shape[1]-1] = b[i,0]
-
-    for i in range(C.shape[0]):
-        # buscas pivote
-        pivote=1
-        for k in range(i, C.shape[1]-1):
-            if C[i,k] !=0:
-                pivote = C[i,k]
-                columna_pivote=k
-                break
-        # dividis por pivote    
-        for j in range(C.shape[1]) :
-            C[i,j]= C[i,j]*(1/pivote)
-        
-        # ceros
-        for j in range(i+1,C.shape[0]):
-            escalar = C[j,columna_pivote]
-            for k in range(C.shape[1]):
-                C[j,k]= C[j,k] - (escalar*C[i,k])      
-        print(C)
-    for i in range(C.shape[0]):
-        non_zero_count = sum([1 for j in range(C.shape[1]-1) if C[i,j] != 0])
-        if non_zero_count == 0 and C[i, C.shape[1]-1] != 0:
-            raise Exception('No tiene solucion')
-        elif non_zero_count == 0 and C[i, C.shape[1]-1] == 0:
-            raise Exception('Infinitas soluciones')
-
-    x = MatrizRala(A.shape[1],b.shape[0])
-    for i in range(C.shape[0]):
-        x[i,0]= C[i, C.shape[1]-1]
-    return x                   
-
-'''
