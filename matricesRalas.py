@@ -341,4 +341,5 @@ W[8,8]=1
 W[9,9]=1
 W[10,10]=1
 d=0.85
-p_estrella= ((1-d)/11)*I + d*(W*D)x
+p_estrella=1
+p_estrella= ((1-d)/11)I + d(W*D)x
