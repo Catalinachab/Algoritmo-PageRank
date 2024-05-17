@@ -24,11 +24,8 @@ class TestIndexacionMatrices:
 
     def test_asignarEnMismaFila( self ):
         A = MatrizRala(3,3)
-        print(A)
         A[0,1] = 2
-        print(A)
         A[0,0] = 1
-        print(A)
 
         assert A[0,1] == 2 and A[0,0] == 1
 
@@ -70,9 +67,7 @@ class TestProductoPorEscalar:
         A[0,0]=1
         A[0,2]=3
         A[2,2]=4
-        print(A)
         C = A * 13
-        print(C)
         assert C[0,0] == (1*13) and C[0,2] == (3*13) and C[2,2] == (4*13)
 
 class TestProductoMatricial:
@@ -158,7 +153,6 @@ class TestGaussJordan:
         A[0,1] = 1
         A[0,2] = 1
         A[1,2] = 1
-        print(A)
         b[0,0] = 1
         b[1,0] = 2
         b[2,0] = 3
