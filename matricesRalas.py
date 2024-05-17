@@ -227,8 +227,6 @@ def GaussJordan( A, b ):
     if A.shape[0] != b.shape[0]:
         raise Exception('A y b deben tener la misma cantidad de filas')
 
-  
-
     C = MatrizRala(A.shape[0], A.shape[1]+1)
     
     for i in range(A.shape[0]):
@@ -275,7 +273,6 @@ def GaussJordan( A, b ):
                 C[j,k] = C[j,k] - (escalar * C[i,k])
 
     
-    
     zeros = False
     absurd = False
     for i in range(A.shape[0]):
@@ -293,7 +290,13 @@ def GaussJordan( A, b ):
     elif zeros:
         raise Exception('Infinitas soluciones')
     else:
-        x = MatrizRala(A.shape[1],b.shape[0])
+        '''
+        x = MatrizRala(A.shape[1],b.shape[0]) #? por que b.shape[0]? x quiero que sea un vector, no? de 1 columna
+        for i in range(C.shape[0]):
+            x[i,0]= C[i, C.shape[1]-1]
+        return x
+        '''
+        x = MatrizRala(C.shape[0],1)
         for i in range(C.shape[0]):
             x[i,0]= C[i, C.shape[1]-1]
         return x
