@@ -40,18 +40,18 @@ I[7,7] = 1
 I[8,8] = 1
 I[9,9] = 1
 I[10,10] = 1
-I_2  =  MatrizRala(11,1) # vector de 1s
-I_2[0,0] =  1
-I_2[1,0] = 1
-I_2[2,0] = 1
-I_2[3,0] = 1
-I_2[4,0] = 1
-I_2[5,0] = 1
-I_2[6,0] = 1
-I_2[7,0] = 1
-I_2[8,0] = 1
-I_2[9,0] = 1
-I_2[10,0] = 1
+vector_unos  =  MatrizRala(11,1) # vector de 1s
+vector_unos[0,0] =  1
+vector_unos[1,0] = 1
+vector_unos[2,0] = 1
+vector_unos[3,0] = 1
+vector_unos[4,0] = 1
+vector_unos[5,0] = 1
+vector_unos[6,0] = 1
+vector_unos[7,0] = 1
+vector_unos[8,0] = 1
+vector_unos[9,0] = 1
+vector_unos[10,0] = 1
 
 p_estrella_it  =  MatrizRala(11,1)
 p_estrella_it[0,0] =  1/11
@@ -68,8 +68,8 @@ p_estrella_it[10,0] = 1/11
 
 d  =  0.85
 
-A  =  I - d*(W@D) 
-b  =  ((1-d)/11)*I
+A  =  I - d*W@D
+b  =  ((1-d)/11)*vector_unos
 p_estrella  =  GaussJordan(A,b)
 print('p_estrella = x / Ax=b:', p_estrella.shape)
 print(p_estrella)
@@ -77,7 +77,7 @@ print('\n')
 
 t = 3
 for i in range(t):
-    p_estrella_it  =  ((1-d)/11)*I_2 + d*W@D@p_estrella_it
+    p_estrella_it  =  ((1-d)/11)*vector_unos + d*W@D@p_estrella_it
 print('p_estrella itertativo:')
 print(p_estrella_it)
 
@@ -89,7 +89,7 @@ import matplotlib.pyplot as plt
 
 t = 30  # Increase the number of iterations for better visualization
 for i in range(t):
-    p_estrella_it  =  ((1-d)/11)*I_2 + d*W@D@p_estrella_it
+    p_estrella_it  =  ((1-d)/11)*vector_unos + d*W@D@p_estrella_it
 print('p_estrella itertativo:', p_estrella_it.shape)
 print(p_estrella_it)
 
