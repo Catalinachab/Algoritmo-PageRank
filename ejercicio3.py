@@ -1,3 +1,4 @@
+import matplotlib.pyplot as plt
 from matricesRalas import *
 W =  MatrizRala(11,11)
 # W[i,j] =  1 si p_j cita a p_i
@@ -75,7 +76,7 @@ print('p_estrella = x / Ax=b:', p_estrella.shape)
 print(p_estrella)
 print('\n')
 
-t = 3
+t = 100
 for i in range(t):
     p_estrella_it  =  ((1-d)/11)*vector_unos + d*W@D@p_estrella_it
 print('p_estrella itertativo:')
@@ -84,27 +85,34 @@ print(p_estrella_it)
 
 
 
-'''
-import matplotlib.pyplot as plt
+p_estrella_it[0,0] =  1/11
+p_estrella_it[1,0] = 1/11
+p_estrella_it[2,0] = 1/11
+p_estrella_it[3,0] = 1/11
+p_estrella_it[4,0] = 1/11
+p_estrella_it[5,0] = 1/11
+p_estrella_it[6,0] = 1/11
+p_estrella_it[7,0] = 1/11
+p_estrella_it[8,0] = 1/11
+p_estrella_it[9,0] = 1/11
+p_estrella_it[10,0] = 1/11
 
-t = 30  # Increase the number of iterations for better visualization
+
+abs_diffs = []
+t=50  
 for i in range(t):
     p_estrella_it  =  ((1-d)/11)*vector_unos + d*W@D@p_estrella_it
+    abs_diff=0
+    for j in range(p_estrella.shape[0]):
+        abs_diff += abs(p_estrella_it[j,0] - p_estrella[j,0])   
+    abs_diffs.append(abs_diff)
 print('p_estrella itertativo:', p_estrella_it.shape)
 print(p_estrella_it)
 
-# Initialize a list to store the absolute differences
-abs_diffs = []
-# Calculate the absolute difference and add it to the list
-for j in range(p_estrella.shape[0]):
-    abs_diff = p_estrella_it[j][0] - p_estrella[j][0]
-    abs_diffs.append(abs(abs_diff))
 
-# Plot the absolute differences
 plt.plot(range(t), abs_diffs)
 plt.xlabel('Iteration')
 plt.ylabel('Absolute Difference')
 plt.title('Convergence of PageRank')
 plt.show()
 
-'''

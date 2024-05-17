@@ -290,12 +290,6 @@ def GaussJordan( A, b ):
     elif zeros:
         raise Exception('Infinitas soluciones')
     else:
-        '''
-        x = MatrizRala(A.shape[1],b.shape[0]) #? por que b.shape[0]? x quiero que sea un vector, no? de 1 columna
-        for i in range(C.shape[0]):
-            x[i,0]= C[i, C.shape[1]-1]
-        return x
-        '''
         x = MatrizRala(C.shape[0],1)
         for i in range(C.shape[0]):
             x[i,0]= C[i, C.shape[1]-1]
