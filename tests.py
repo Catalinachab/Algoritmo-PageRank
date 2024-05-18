@@ -92,6 +92,23 @@ class TestProductoMatricial:
 
         assert C.shape[0] == 2 and C.shape[1]==3 and C[0,0] == 9 and all( [C[i,i] == 0 for i in range(3) for j in range(4) if (i!=j and i!=0)] )
 
+    def test_producto2MatricesCuadradas(self):
+        A = MatrizRala(2,2)
+        B = MatrizRala(2,2)
+
+        A[0,0]=2
+        A[0,1]=3
+        A[1,0]=4
+
+        B[0,0]=3
+        B[0,1]=5
+        B[1,0]=4
+        B[1,1]=8
+
+        C = A @ B
+
+        assert C.shape[0] == 2 and C.shape[1]==2 and C[0,0] == 18 and C[0,1]== 34 and C[1,0]==12 and C[1,1]== 20
+
     def test_productoPorIdentidad( self ):
         A = MatrizRala(3,3)
         Id = MatrizRala(3,3)

@@ -44,7 +44,7 @@ while abs(dif_abs - dif_abs_prev) > epsilon:
     dif_abs = 0
     for j in range(p_estrella_it.shape[0]):
         dif_abs += abs(p_estrella_it[j,0] - p_estrella_prev[j,0])   
-    
+print(p_estrella_it)    
 ranking = []
 for i in range(10):
     mayor = 0
@@ -53,6 +53,7 @@ for i in range(10):
         if (p_estrella_it[j,0] > mayor) and ((j+1) not in ranking):
             mayor = p_estrella_it[j,0]
             mayor_pos = j+1
+    print(mayor_pos)        
     ranking.append(mayor_pos)
 
 print(ranking)
