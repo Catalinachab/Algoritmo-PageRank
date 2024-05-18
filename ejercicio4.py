@@ -1,5 +1,6 @@
 from matricesRalas import *
 import numpy as np
+import math
 
 D = MatrizRala(629814,629814)
 W = MatrizRala(629814,629814)
@@ -34,22 +35,23 @@ print("sali del tercer ciclo")
 d = 0.85
 dif_abs = 1e16
 dif_abs_prev = 0
-epsilon = 0.0001
+epsilon = 0.0005
 
 k = ((1-d)/629814)*vector_unos
 print("hice k")
-s = W@D
-print("hice s primer etapa")
-s= d*s
+s= d*W@D
 print("hice s")
-
-while abs(dif_abs - dif_abs_prev) > epsilon:
-    dif_abs_prev = dif_abs
+i=0
+while math.sqrt(dif_abs) > epsilon:
     p_estrella_prev = p_estrella_it
     p_estrella_it = k + s@p_estrella_it
-    dif_abs = 0
-    for j in range(p_estrella_it.shape[0]):
-        dif_abs += abs(p_estrella_it[j,0] - p_estrella_prev[j,0])
+    temp = p_estrella_it - p_estrella_prev
+    dif_abs=0
+    for i in range(629814):
+        dif_abs+=(temp[i,0])**2
+    
+
+
     
 print("sali del cuarto ciclo")
 ranking = []
