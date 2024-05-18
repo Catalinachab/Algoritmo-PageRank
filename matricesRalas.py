@@ -5,7 +5,6 @@ class ListaEnlazada:
     def __init__( self ):
         self.raiz = None
         self.longitud = 0
-        
         self.current = self.Nodo(None, self.raiz)
 
     def insertarFrente( self, valor ):
@@ -160,8 +159,6 @@ class MatrizRala:
             self.filas[Idx[0]] = ListaEnlazada()
             self.filas[Idx[0]].insertarFrente((Idx[1], v)) 
                
-        
-       
 
     def __mul__( self, k ):
         # Esta funcion implementa el producto matriz-escalar -> A * k
@@ -231,33 +228,31 @@ def GaussJordan( A, b ):
     
     for i in range(A.shape[0]):
         for j in range(A.shape[1]):
-            C[i,j]=A[i,j]
+            C[i,j] = A[i,j]
     for i in range(A.shape[0]):
         C[i, C.shape[1]-1] = b[i,0]
       
-    minimo = min(A.shape[0],A.shape[1])
+    minimo = min(A.shape[0], A.shape[1])
     for i in range(C.shape[0]):
         
         # buscas pivote
-        
-        if C[i,i] !=0 and i!= C.shape[1]-1:
+        if C[i,i] != 0 and i != C.shape[1]-1:
             pivote = C[i,i]
-            
         else:
-            # Swapear filas
+            # swapear filas si el pivote es 0
             for fila in range(i+1, C.shape[0]):
                 if C[fila,i]!=0:
-                   lista1= C.filas[fila]
-                   indice_fila=fila
+                   lista1 = C.filas[fila]
+                   indice_fila = fila
                    break
-            lista2= C.filas[i] 
-            C.filas[i]=lista1
-            C.filas[indice_fila]=lista2
+            lista2 = C.filas[i] 
+            C.filas[i] = lista1
+            C.filas[indice_fila] = lista2
             pivote = C[i,i]
-        # dividis por pivote    
         
+        # dividis por pivote    
         for k in range(C.shape[1]) :
-            C[i,k]= C[i,k]*(1/pivote)
+            C[i,k] = C[i,k]*(1/pivote)
         
         # ceros
         for j in range(i+1, C.shape[0]):
@@ -267,7 +262,7 @@ def GaussJordan( A, b ):
     
     
     for i in range(C.shape[0],0,-1):
-        for j in range(i-1, -1, -1):  # habia que poner hasta -1 se ve, no hasta 0, porque no estaba incluido
+        for j in range(i-1, -1, -1):
             escalar = C[j,i]
             for k in range(C.shape[1]):
                 C[j,k] = C[j,k] - (escalar * C[i,k])
@@ -278,7 +273,7 @@ def GaussJordan( A, b ):
     for i in range(A.shape[0]):
         current = A.filas[i].raiz
         t = 0
-        while current is not None and (current.valor[1] == 0): 
+        while (current is not None) and (current.valor[1] == 0):
             t+=1
         if t == A.shape[1]-1:
             absurd = True
@@ -292,7 +287,5 @@ def GaussJordan( A, b ):
     else:
         x = MatrizRala(C.shape[0],1)
         for i in range(C.shape[0]):
-            x[i,0]= C[i, C.shape[1]-1]
+            x[i,0] = C[i, C.shape[1]-1]
         return x
-
-
