@@ -164,8 +164,11 @@ class MatrizRala:
         # Esta funcion implementa el producto matriz-escalar -> A * k
         matMul = MatrizRala(self.shape[0], self.shape[1])
         for i in range(self.shape[0]):
-            for j in range(self.shape[1]):
-                matMul[i,j] = self[i,j]*k
+            if i in self.filas:
+                fila = self.filas[i]
+                for nodo in fila:
+                    j=nodo[0]
+                    matMul[i,j] = self[i,j]*k
         return matMul   
     
                     
@@ -180,8 +183,15 @@ class MatrizRala:
       
         matAdd = MatrizRala(self.shape[0], self.shape[1])
         for i in range(self.shape[0]):
-            for j in range(self.shape[1]):
-                matAdd[i,j] = self[i,j] + other[i,j]
+            if i in self.filas:
+                for nodo in self.filas[i]:
+                    j = nodo[0]
+                    matAdd[i, j] = self[i,j]
+            if i in other.filas:
+                for nodo in other.filas[i]:
+                    j = nodo[0]
+                    matAdd[i, j] += other[i,j]
+        
         return matAdd
     
     def __sub__( self, other ):
@@ -189,21 +199,27 @@ class MatrizRala:
         if self.shape != other.shape:
             raise Exception('Las matrices deben tener las mismas dimensiones')
         
-        matSub = MatrizRala(self.shape[0], self.shape[1])
-        for i in range (self.shape[0]):
-            for j in range (self.shape[1]):
-                matSub[i,j] = self[i,j] - other[i,j]
-        return matSub
+        return self+(-1)*other
         
     def __matmul__( self, other ):
         # Esta funcion implementa el producto matricial (notado en Python con el operador "@" ) -> A @ B
         if self.shape[1] != other.shape[0]:
             raise Exception('Las dimensiones de las matrices no son compatibles para el producto matricial')
         matMul = MatrizRala(self.shape[0], other.shape[1])
-        for i in range(self.shape[0]): # filas de A
-            for j in range(other.shape[1]): # columnas de B
-                for k in range(self.shape[1]): # columnas de A
-                    matMul[i,j] += self[i,k] * other[k,j]
+         
+        for i in range(self.shape[0]):
+            if i in self.filas:
+                fila = self.filas[i]
+                for nodo in fila:
+                    k= nodo[0]
+                    self_valor=nodo[1]
+                    if k in other.filas:
+                        other_fila = other.filas[k]
+                        for other_nodo in other_fila:
+                            j=other_nodo[0]
+                            other_valor = other_nodo[1]
+                            matMul[i, j] += self_valor * other_valor
+        
         return matMul
         
     def __repr__( self ):

@@ -39,10 +39,9 @@ for i in range(11):
     p_estrella_it[i,0] = 1/11
 
 d = 0.85
-A = I - d*W@D
+A = I + (-1)*(d*W@D)
 b = ((1-d)/11)*vector_unos
 p_estrella = GaussJordan(A,b) # p_estrella = x / Ax=b:
-
 diferencias_abs = []
 t = 100
 for i in range(t):
