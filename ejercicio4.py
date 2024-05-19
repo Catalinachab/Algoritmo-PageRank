@@ -57,16 +57,34 @@ print(p_estrella_it[81323,0])
 
     
 print("sali del cuarto ciclo")
-ranking = []
+ranking_impacto = []
+
 for i in range(10):
-    mayor = 0
-    mayor_pos = 0
+    mayor_imp = 0
+    mayor_imp_pos = 0
+   
     for j in range(629814):
-        if (p_estrella_it[j,0] > mayor) and ((j) not in ranking):
-            mayor = p_estrella_it[j,0]
-            mayor_pos = j
-    ranking.append(mayor_pos)
-
+        if (p_estrella_it[j,0] > mayor_imp) and (j not in ranking_impacto):
+            mayor_imp = p_estrella_it[j,0]
+            mayor_imp_pos = j
+        
+    ranking_impacto.append(mayor_imp_pos)
 print("sali del quinto ciclo")
+citas=W*vector_unos
+ranking_citas =[]  
+for i in range(10):
+    mayor_cit =0
+    mayor_cit_pos =0
+    for j in range(629814):
+        if(citas[j,0]>mayor_cit) and (j not in ranking_citas):
+            mayor_cit=citas[j,0]
+            mayor_cit_pos=j
+    ranking_citas.append(mayor_cit_pos)
 
-print(ranking)
+print("Top 10 papers con mayor impacto")
+for i in ranking_impacto:
+    print(f"ID:{ranking_impacto[i]} Impacto:{p_estrella_it[ranking_impacto[i],0]}")
+print("Top 10 papers con mayor cantidad de citas")
+
+for i in ranking_citas:
+    print(f"ID:{ranking_citas[i]} Citas:{citas[ranking_citas[i],0]} Impacto{p_estrella_it[ranking_citas[i],0]}")   
