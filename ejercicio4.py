@@ -10,12 +10,12 @@ for fila in archivo_citas:
     fila = fila.split(',')
     if fila[0] != 'from':
 
-        W[int(fila[1])-1,int(fila[0])-1] = 1
+        W[int(fila[1]),int(fila[0])] = 1
 
-        if D[int(fila[0])-1,int(fila[0])-1]:
-            D[int(fila[0])-1,int(fila[0])-1] += 1
+        if D[int(fila[0]),int(fila[0])]:
+            D[int(fila[0]),int(fila[0])] += 1
         else:
-            D[int(fila[0])-1,int(fila[0])-1] = 1
+            D[int(fila[0]),int(fila[0])] = 1
 
 print("sali del primer ciclo")
 archivo_citas.close()
@@ -35,7 +35,7 @@ print("sali del tercer ciclo")
 d = 0.85
 dif_abs = 1e16
 dif_abs_prev = 0
-epsilon = 0.0005
+epsilon = 1e-4
 
 k = ((1-d)/629814)*vector_unos
 print("hice k")
@@ -44,12 +44,17 @@ print("hice s")
 i=0
 while math.sqrt(dif_abs) > epsilon:
     p_estrella_prev = p_estrella_it
+    print("1")
     p_estrella_it = k + s@p_estrella_it
-    temp = p_estrella_it - p_estrella_prev
+    print("2")
     dif_abs=0
     for i in range(629814):
-        dif_abs+=(temp[i,0])**2
-    
+        temp = p_estrella_it[i,0] - p_estrella_prev[i,0]
+        dif_abs+=temp**2
+           
+#print(p_estrella_it[327827,0])
+#print(p_estrella_it[81323,0])  
+
 
 
     

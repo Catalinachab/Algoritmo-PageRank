@@ -1,3 +1,4 @@
+import math
 import matplotlib.pyplot as plt
 from matricesRalas import *
 
@@ -48,8 +49,8 @@ for i in range(t):
     p_estrella_it  =  ((1-d)/11)*vector_unos + d*W@D@p_estrella_it
     delta = 0
     for j in range(p_estrella.shape[0]):
-        delta += abs(p_estrella_it[j,0] - p_estrella[j,0])   
-    diferencias_abs.append(delta)
+        delta += (p_estrella_it[j,0] - p_estrella[j,0])**2   
+    diferencias_abs.append(math.sqrt(delta))
 
 plt.plot(range(t), diferencias_abs)
 plt.xlabel('Iteración')

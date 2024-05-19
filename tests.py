@@ -69,7 +69,7 @@ class TestRestaMatrices:
         with pytest.raises(Exception) as e_info:
             C = A - B
     
-    def test_sumaCorrectamente( self ):
+    def test_restaCorrectamente( self ):
         
         A = MatrizRala(3,3)
         B = MatrizRala(3,3)

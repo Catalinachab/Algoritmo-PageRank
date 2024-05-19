@@ -198,8 +198,9 @@ class MatrizRala:
         # Esta funcion implementa la resta de matrices (pueden usar suma y producto) -> A - B
         if self.shape != other.shape:
             raise Exception('Las matrices deben tener las mismas dimensiones')
-        
-        return self+(-1)*other
+        matSub = MatrizRala(self.shape[0], self.shape[1])
+        matSub = self+(-1)*other
+        return matSub
         
     def __matmul__( self, other ):
         # Esta funcion implementa el producto matricial (notado en Python con el operador "@" ) -> A @ B
