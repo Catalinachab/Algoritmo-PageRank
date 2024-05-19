@@ -35,7 +35,7 @@ print("sali del tercer ciclo")
 d = 0.85
 dif_abs = 1e16
 dif_abs_prev = 0
-epsilon = 1e-4
+epsilon = 1e-5
 
 k = ((1-d)/629814)*vector_unos
 print("hice k")
@@ -44,16 +44,14 @@ print("hice s")
 i=0
 while math.sqrt(dif_abs) > epsilon:
     p_estrella_prev = p_estrella_it
-    print("1")
     p_estrella_it = k + s@p_estrella_it
-    print("2")
     dif_abs=0
     for i in range(629814):
         temp = p_estrella_it[i,0] - p_estrella_prev[i,0]
         dif_abs+=temp**2
            
-#print(p_estrella_it[327827,0])
-#print(p_estrella_it[81323,0])  
+print(p_estrella_it[327827,0])
+print(p_estrella_it[81323,0])  
 
 
 
