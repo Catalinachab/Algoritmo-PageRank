@@ -70,7 +70,7 @@ for i in range(10):
         
     ranking_impacto.append(mayor_imp_pos)
 print("sali del quinto ciclo")
-citas=W*vector_unos
+citas=W@vector_unos
 ranking_citas =[]  
 for i in range(10):
     mayor_cit =0
@@ -83,8 +83,9 @@ for i in range(10):
 
 print("Top 10 papers con mayor impacto")
 for i in ranking_impacto:
-    print(f"ID:{ranking_impacto[i]} Impacto:{p_estrella_it[ranking_impacto[i],0]}")
+    print(f"Paper ID: {i} Impacto: {p_estrella_it[i,0]}")
+print("------------------------------------------------------------")
 print("Top 10 papers con mayor cantidad de citas")
 
 for i in ranking_citas:
-    print(f"ID:{ranking_citas[i]} Citas:{citas[ranking_citas[i],0]} Impacto{p_estrella_it[ranking_citas[i],0]}")   
+    print(f"Paper ID: {i} Citas: {citas[i,0]} Impacto: {p_estrella_it[i,0]}")   
