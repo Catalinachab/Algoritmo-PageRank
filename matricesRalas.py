@@ -1,3 +1,4 @@
+#Chab López, Catalina; Chen, Belén; Ferreiro Grau, Luna
 # IMPORTANTE: Para importar estas clases en otro archivo (que se encuentre en la misma carpeta), escribir:
 # from matricesRalas import MatrizRala, GaussJordan 
 
